@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title>jquery.form.js</title>
+    <!--insert jquery -->
+    <script type="text/javascript" src="http://localhost:8080/source/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div style="height:300px;background:red;"></div>
+ 	<form name="upload_share_form" id="form1" action="" method="post" enctype="multipart/form-data" >  
+		<input type="file" name="file" / id="upload_file_input"> 
+		<input type="submit" value="Submit" />
+	</form>
+	<p id="ajax_upload_message"></p>
+    <!--insert jquery.form.js-->
+	<script type="text/javascript" src="jquery.form.js"></script>
+    <script type="text/javascript">
+        /*
+        * clicking the submit button triggers ajaxSubmit  once the input'value changed
+        */
+    	$(document).ready(function () {
+            $("#upload_file_input").bind('change', function () {
+                $("#form1").submit(function () {
+                    $(this).ajaxSubmit({
+                        success: function () {
+                            $("#ajax_upload_message").html("the image has been uploaded ").show();
+                        },
+                        //the address of uploading images
+                        url: "http://localhost:8080/jshc-base/cms/upload",
+                        data: $('#upload_share_form').formSerialize(),
+                        type: 'POST',
+                        dataType: 'json',
+                        beforeSubmit: function () {
+                            $('#ajax_upload_message').html('uploading ,please wait ...');
+                        },
+                        error:function(){
+                        	 $('#ajax_upload_message').html('sorry,failed');
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
